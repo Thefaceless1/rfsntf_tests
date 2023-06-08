@@ -1,1 +1,7 @@
+/node_modules
+/coverage
 /.idea
+/playwright/.cache/
+/src/e2e/artifacts/screenshots/*.png
+/src/e2e/artifacts/allure-report/
+/src/e2e/artifacts/report/
