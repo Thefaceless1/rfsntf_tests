@@ -1,0 +1,27 @@
+{
+  "name": "rfsntf_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "playwright_powershell": "$env:BRANCH=\"prod\"\nnpx playwright test\nallure generate src/e2e/artifacts/report -o src/e2e/artifacts/allure-report --clean\nallure open src/e2e/artifacts/allure-report",
+    "playwright_cmd": "set BRANCH=prod\nnpx playwright test & allure generate src/e2e/artifacts/report -o src/e2e/artifacts/allure-report --clean & allure open src/e2e/artifacts/allure-report"
+  },
+  "author": "shelekh mikhail",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "-": "^0.0.1",
+    "@types/node": "^18.11.13",
+    "allure-commandline": "^2.22.1",
+    "allure-playwright": "^2.4.0",
+    "node": "^19.2.0",
+    "node-2fa": "^2.0.3",
+    "postgres": "^3.3.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.29.1"
+  }
+}
