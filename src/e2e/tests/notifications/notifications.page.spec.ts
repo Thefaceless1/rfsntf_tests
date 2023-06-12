@@ -5,23 +5,25 @@ test.describe("Уведомления",() => {
         "1. Просмотр выбранного уведомления " +
         "2. Перемещение уведомления в корзину " +
         "3. Удаление уведомления " +
-        "4. Пометка уведомления как прочитанного " +
-        "5. Изменение подписки на уведомления"
+        "4. Отметка уведомления как прочитанного " +
+        "5. Отметка уведомления как непрочитанного " +
+        "6. Изменение подписки на уведомления"
         ,async ({notifications}) => {
-        await test.step("View selected notification",async () => notifications.viewSelectedNotification());
-        await test.step("Move notification to trash",async () => notifications.moveToTrash());
-        await test.step("Deleting selected notification",async () => notifications.deleteNotification());
-        await test.step("Mark notification as read",async () => notifications.markAsRead());
-        await test.step("Changing notification subscriptions",async () => notifications.changeSubscription());
+        await test.step("Просмотр выбранного уведомления",async () => notifications.viewSelectedNotification());
+        await test.step("Перемещение уведомления в корзину",async () => notifications.moveToTrash());
+        await test.step("Удаление уведомления",async () => notifications.deleteNotification());
+        await test.step("Отметка уведомления как прочитанного",async () => notifications.markAsRead());
+        await test.step("Отметка уведомления как непрочитанного",async () => notifications.markAsUnread());
+        await test.step("Изменение подписки на уведомления",async () => notifications.changeSubscription());
     })
     test("Сценарий проверки администрирования уведомлений: " +
         "1. Добавление модуля " +
         "2. Добавление шаблона уведомлений " +
         "3. Редактирование шаблона уведомлений " +
         "4. Удаление шаблона уведомлений",async ({notifications}) => {
-        await test.step("Adding a module",async () => notifications.addModule());
-        await test.step("Adding a notification template",async () => notifications.addTemplate());
-        await test.step("Editing a notification template",async () => notifications.editTemplate());
-        await test.step("Removing a notification template",async () => notifications.deleteTemplate());
+        await test.step("Добавление модуля",async () => notifications.addModule());
+        await test.step("Добавление шаблона уведомлений",async () => notifications.addTemplate());
+        await test.step("Редактирование шаблона уведомлений",async () => notifications.editTemplate());
+        await test.step("Удаление шаблона уведомлений",async () => notifications.deleteTemplate());
     })
 })

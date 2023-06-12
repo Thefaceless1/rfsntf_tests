@@ -2,6 +2,7 @@ export enum Notifications {
     deletedFromTrash = "Удалены из корзины",
     movedToTrash = "Помещены в корзину",
     markedAsRead = "Отмечены как прочитанные",
+    markedAsUnread = "Отмечены как непрочитанные",
     categoryAdded = "Разряд добавлен",
     categoryChanged = "Разряд изменен",
     groupAdded = "Группа добавлена",

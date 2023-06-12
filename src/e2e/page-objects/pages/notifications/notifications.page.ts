@@ -86,6 +86,12 @@ export class NotificationsPage extends MainPage {
         return Elements.getElement(this.page,"//span[text()='Отметить как прочитанные']");
     }
     /**
+     * Button "Mark as unread"
+     */
+    private get markAsUnreadButton() : Locator {
+        return Elements.getElement(this.page,"//span[text()='Отметить как непрочитанные']");
+    }
+    /**
      * Read message
      */
     private get readMessage() : Locator {
@@ -247,6 +253,15 @@ export class NotificationsPage extends MainPage {
         await this.markAsReadButton.click();
         await expect(this.notification(Notifications.markedAsRead)).toBeVisible();
         await expect(this.readMessage).toBeVisible();
+    }
+    /**
+     * Mark notification as unread
+     */
+    public async markAsUnread() : Promise<void> {
+        await this.page.goBack();
+        await this.checkbox.nth(1).click();
+        await this.markAsUnreadButton.click();
+        await expect(this.notification(Notifications.markedAsUnread)).toBeVisible();
     }
     /**
      * Changing notification subscriptions
