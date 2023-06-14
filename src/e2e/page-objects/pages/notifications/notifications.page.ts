@@ -295,7 +295,13 @@ export class NotificationsPage extends MainPage {
      */
     private async navigateTo(target : "manageTemplates" | "moduleEditor") : Promise<void> {
         await this.navigationMenuButton.click();
-        await this.administrationButton.click();
+        try {
+            await this.administrationButton.click();
+        }
+        catch (err) {
+            await this.navigationMenuButton.click();
+            await this.administrationButton.click();
+        }
         await Elements.waitForVisible(this.manageTemplateButton);
         (target == "manageTemplates") ?
             await this.manageTemplateButton.click() :

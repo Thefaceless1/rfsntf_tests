@@ -13,8 +13,6 @@
   "dependencies": {
     "-": "^0.0.1",
     "@types/node": "^18.11.13",
-    "allure-commandline": "^2.22.1",
-    "allure-playwright": "^2.4.0",
     "node": "^19.2.0",
     "node-2fa": "^2.0.3",
     "postgres": "^3.3.5",

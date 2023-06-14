@@ -4,7 +4,11 @@ export class InputData {
     /**
      * Get current date
      */
-    public static currentDate  : string = new Date().toDateString();
+    public static currentDate  : string = new Date().toLocaleDateString();
+    /**
+     * Current module version
+     */
+    public static moduleVersion  : string = "10.1.1.1";
     /**
      * Future date
      */
