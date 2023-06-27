@@ -4,6 +4,11 @@ import {InputData} from "../../page-objects/helpers/input-data.js";
 test.describe("Уведомления",() => {
     test(`Работа с уведомлениям. Дата запуска: ${InputData.currentDate}, Версия модуля: ${InputData.moduleVersion}`
         ,async ({notifications}) => {
+        test.info().annotations.push
+        (
+            {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
+            {type: "Версия модуля",description: `${InputData.moduleVersion}`}
+        );
         await test.step("Просмотр выбранного уведомления",async () => notifications.viewSelectedNotification());
         await test.step("Перемещение уведомления в корзину",async () => notifications.moveToTrash());
         await test.step("Удаление уведомления",async () => notifications.deleteNotification());
@@ -13,6 +18,11 @@ test.describe("Уведомления",() => {
     })
     test(`Администрирование уведомлений. Дата запуска: ${InputData.currentDate}, Версия модуля: ${InputData.moduleVersion}`,
         async ({notifications}) => {
+        test.info().annotations.push
+        (
+            {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
+            {type: "Версия модуля",description: `${InputData.moduleVersion}`}
+        );
         await test.step("Добавление модуля",async () => notifications.addModule());
         await test.step("Добавление шаблона уведомлений",async () => notifications.addTemplate());
         await test.step("Редактирование шаблона уведомлений",async () => notifications.editTemplate());
