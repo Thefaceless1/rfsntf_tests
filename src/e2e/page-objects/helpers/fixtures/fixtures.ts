@@ -8,8 +8,9 @@ type Fixtures = {
 export const test = base.extend<Fixtures>({
     notifications : async ({page},use) => {
         const notification = new NotificationsPage(page);
-        if (Process.env.BRANCH != "prod") await notification.checkNotificationUser();
+        await notification.addNotificationUser();
         await notification.login()
         await use(notification);
+        if(Process.env.BRANCH == "prod") await notification.deleteNotificationUser();
     }
 })

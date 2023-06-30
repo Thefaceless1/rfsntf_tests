@@ -13,3 +13,10 @@ export const userNotifications = {
         isReceived : "is_received"
     }
 }
+export const workOperationLog = {
+    tableName : "rfsntf.work_operations_log",
+    columns : {
+        id : "id",
+        userId : "user_id"
+    }
+}

@@ -281,13 +281,24 @@ export class NotificationsPage extends MainPage {
      * 1. Create the user if he doesn't exist
      * 2. Set admin role if the user has a different role
      */
-    public async checkNotificationUser() : Promise<void> {
-        const response = await this.page.request.get(Api.users);
-        this.userId = await response.json().then(value => value.data[this.userNumber].id);
+    public async addNotificationUser() : Promise<void> {
         const dbHelper = new DbHelper();
-        const userRoleId = await dbHelper.getUserRoleId(this.userId);
-        if(userRoleId.length < 1) await dbHelper.insertNotificationUser(this.userId);
-        else if(userRoleId[0].user_id != NotificationRoles.admin) await dbHelper.setAdminRole(this.userId);
+        if(Process.env.BRANCH == "prod") await dbHelper.insertUser(this.prodUserId);
+        else {
+            const response = await this.page.request.get(Api.users);
+            this.userId = await response.json().then(value => value.data[this.userNumber].id);
+            const userRoleId = await dbHelper.getUserRoleId(this.userId);
+            if(userRoleId.length < 1) await dbHelper.insertUser(this.userId);
+            else if(userRoleId[0].user_id != NotificationRoles.admin) await dbHelper.setAdminRole(this.userId);
+        }
+        await dbHelper.closeConnect();
+    }
+    /**
+     * Delete user from notification module
+     */
+    public async deleteNotificationUser() : Promise<void> {
+        const dbHelper = new DbHelper();
+        await dbHelper.deleteUser(this.prodUserId);
         await dbHelper.closeConnect();
     }
     /**
