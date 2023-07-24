@@ -10,187 +10,187 @@ import * as Process from "process";
 import {Api} from "../../helpers/enums/api.js";
 
 export class NotificationsPage extends MainPage {
-    private readonly moduleName : string = InputData.randomWord;
-    private templateName : string = InputData.randomWord;
-    constructor(page : Page) {
+    private readonly moduleName: string = InputData.randomWord;
+    private templateName: string = InputData.randomWord;
+    constructor(page: Page) {
         super(page);
     }
     /**
      * Bell button
      */
-    private bellButton : Locator = Elements.getElement(this.page,"//span[contains(@class,'IconRing')]");
+    private bellButton: Locator = Elements.getElement(this.page,"//span[contains(@class,'IconRing')]")
     /**
      * List of unread messages
      */
-    private unreadMessageList : Locator = Elements.getElement(this.page,"//*[contains(@class,'ContextMenuItem-Slot_position_center')]");
+    private unreadMessageList: Locator = Elements.getElement(this.page,"//*[contains(@class,'ContextMenuItem-Slot_position_center')]")
     /**
      * Icon with the number of unread messages
      */
-    private countMessageIcon : Locator = Elements.getElement(this.page,"//sup");
+    private countMessageIcon: Locator = Elements.getElement(this.page,"//sup")
     /**
      * Button "Show all"
      */
-    private showAllButton : Locator = Elements.getElement(this.page,"//*[text()='Показать все']");
+    private showAllButton: Locator = Elements.getElement(this.page,"//*[text()='Показать все']")
     /**
      * Button "Subscription to notifications"
      */
-    private get subscriptionNotificationButton() : Locator {
+    private get subscriptionNotificationButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Подписка на уведомления']");
     }
     /**
      * Message text
      */
-    private messageText(page : Page) : Locator {
+    private messageText(page: Page): Locator {
         return Elements.getElement(page,"//*[contains(@class,'NotificationInfoPage_message')]");
     }
     /**
      * Column "Date and time created"
      */
-    private get createdDateColumn() : Locator {
+    private get createdDateColumn(): Locator {
         return Elements.getElement(this.page,"//td[@class='ant-table-cell'][3]");
     }
     /**
      * Column "Notifications"
      */
-    private get notificationsColumn() : Locator {
+    private get notificationsColumn(): Locator {
         return Elements.getElement(this.page,"//td[@class='ant-table-cell'][2]//div//a");
     }
     /**
      * Button "Delete selected"
      */
-    private get deleteSelectedButton() : Locator {
+    private get deleteSelectedButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Удалить выбранные']");
     }
     /**
      * Button "Delete from trash"
      */
-    private get deleteFromTrashButton() : Locator {
+    private get deleteFromTrashButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Удалить из корзины']");
     }
     /**
      * Button "Deleted notifications"
      */
-    private get deletedNotificationsButton() : Locator {
+    private get deletedNotificationsButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Удаленные уведомления']");
     }
     /**
      * Button "Delete without recovery"
      */
-    private get deleteWithoutRecoveryButton() : Locator {
+    private get deleteWithoutRecoveryButton(): Locator {
         return Elements.getElement(this.page,"//button[text()='Удалить без восстановления']");
     }
     /**
      * Button "Mark as read"
      */
-    private get markAsReadButton() : Locator {
+    private get markAsReadButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Отметить как прочитанные']");
     }
     /**
      * Button "Mark as unread"
      */
-    private get markAsUnreadButton() : Locator {
+    private get markAsUnreadButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Отметить как непрочитанные']");
     }
     /**
      * Read message
      */
-    private get readMessage() : Locator {
+    private get readMessage(): Locator {
         return Elements.getElement(this.page,"//a//*[contains(@class,'Text_view_secondary')]");
     }
     /**
      * Button "Administration"
      */
-    private get administrationButton() : Locator {
+    private get administrationButton(): Locator {
         return Elements.getElement(this.page,"//span[text()='Администрирование']");
     }
     /**
      * Button "Navigation menu"
      */
-    private get navigationMenuButton() : Locator {
+    private get navigationMenuButton(): Locator {
         return Elements.getElement(this.page,"//*[contains(@class,'Navbar_menuButton')]//button");
     }
     /**
      * Button "Close navigation menu"
      */
-    private get closeMenuButton() : Locator {
+    private get closeMenuButton(): Locator {
         return Elements.getElement(this.page,"//*[contains(@class,'ant-drawer-close')]//button");
     }
     /**
      * Field "Select module"
      */
-    private get selectModule() : Locator {
+    private get selectModule(): Locator {
         return Elements.getElement(this.page,"//*[contains(@class,'module__control')]");
     }
     /**
      * Dropdown values of field "Select module"
      */
-    private moduleValue(moduleName : string) : Locator {
+    private moduleValue(moduleName: string): Locator {
         return Elements.getElement(this.page,`//*[contains(@class,'module__option') and text()='${moduleName}']`);
     }
     /**
      * Button "Notification template management"
      */
-    private get manageTemplateButton() : Locator {
+    private get manageTemplateButton(): Locator {
         return Elements.getElement(this.page,"//li[contains(@data-menu-id,'template')]");
     }
     /**
      * Button "Module editor"
      */
-    private get moduleEditButton () : Locator {
+    private get moduleEditButton(): Locator {
         return Elements.getElement(this.page,"//li[contains(@data-menu-id,'modules')]");
     }
     /**
      * Button "Add template"
      */
-    private get addTemplateButton() : Locator {
+    private get addTemplateButton(): Locator {
         return Elements.getElement(this.page,"//button[text()='Добавить шаблон']");
     }
     /**
      * Field "Code"
      */
-    private get code() : Locator {
+    private get code(): Locator {
         return Elements.getElement(this.page,"//input[@placeholder='Введите код']");
     }
     /**
      * Field "Title"
      */
-    private get title() : Locator {
+    private get title(): Locator {
         return Elements.getElement(this.page,"//input[@placeholder='Введите заголовок']");
     }
     /**
      * Field "Template text"
      */
-    private get templateText() : Locator {
+    private get templateText(): Locator {
         return Elements.getElement(this.page,"//textarea[contains(@placeholder,'Введите текст шаблона')]");
     }
     /**
      * Field "Period"
      */
-    private get period() : Locator {
+    private get period(): Locator {
         return Elements.getElement(this.page,"//input[@name='period']");
     }
     /**
      * Get module by name
      */
-    private getModuleByName(moduleName : string) : Locator {
+    private getModuleByName(moduleName: string): Locator {
         return Elements.getElement(this.page,`//td[text()='${moduleName}']`);
     }
     /**
      * Get template by name
      */
-    private getTemplateByName(templateName : string) : Locator {
+    private getTemplateByName(templateName: string): Locator {
         return Elements.getElement(this.page,`//textarea[contains(@name,'title') and text()='${templateName}']`);
     }
     /**
      * Button "Add module"
      */
-    private get addModuleButton() : Locator {
+    private get addModuleButton(): Locator {
         return Elements.getElement(this.page,"//button[text()='Добавить модуль']");
     }
     /**
      * Open selected notification
      */
-    public async viewSelectedNotification() : Promise<void> {
+    public async viewSelectedNotification(): Promise<void> {
         if (Process.env.BRANCH != "prod") {
             const dbHelper = new DbHelper();
             await dbHelper.markAsUnreadMessages(this.userId);
@@ -215,7 +215,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Open all notifications
      */
-    private async openAllNotifications() : Promise<void> {
+    private async openAllNotifications(): Promise<void> {
         await this.bellButton.click();
         const popupPromise = this.page.waitForEvent('popup');
         await this.showAllButton.click();
@@ -226,7 +226,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Move to trash notification
      */
-    public async moveToTrash() : Promise<void> {
+    public async moveToTrash(): Promise<void> {
         if (Process.env.BRANCH != "prod") await this.openAllNotifications();
         await Elements.waitForVisible(this.createdDateColumn.first());
         await this.checkbox.nth(1).click();
@@ -238,7 +238,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Delete notification
      */
-    public async deleteNotification() : Promise<void> {
+    public async deleteNotification(): Promise<void> {
         await this.checkbox.nth(1).click();
         await this.deleteFromTrashButton.click();
         await this.deleteWithoutRecoveryButton.click();
@@ -247,7 +247,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Mark notification as read
      */
-    public async markAsRead() : Promise<void> {
+    public async markAsRead(): Promise<void> {
         await this.page.goBack();
         await this.checkbox.nth(1).click();
         await this.markAsReadButton.click();
@@ -257,7 +257,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Mark notification as unread
      */
-    public async markAsUnread() : Promise<void> {
+    public async markAsUnread(): Promise<void> {
         await this.page.goBack();
         await this.checkbox.nth(1).click();
         await this.markAsUnreadButton.click();
@@ -266,10 +266,10 @@ export class NotificationsPage extends MainPage {
     /**
      * Changing notification subscriptions
      */
-    public async changeSubscription() : Promise<void> {
+    public async changeSubscription(): Promise<void> {
         await this.subscriptionNotificationButton.click();
         await Elements.waitForVisible(this.checkbox.first());
-        const enabledCheckboxCount : number = await this.checkbox.count();
+        const enabledCheckboxCount: number = await this.checkbox.count();
         for(let i = 1; i < enabledCheckboxCount; i++) {
             if(i%2 != 0) await this.checkbox.nth(i).click();
         }
@@ -281,7 +281,7 @@ export class NotificationsPage extends MainPage {
      * 1. Create the user if he doesn't exist
      * 2. Set admin role if the user has a different role
      */
-    public async addNotificationUser() : Promise<void> {
+    public async addNotificationUser(): Promise<void> {
         const dbHelper = new DbHelper();
         if(Process.env.BRANCH == "prod") await dbHelper.insertUser(this.prodUserId);
         else {
@@ -296,7 +296,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Delete user from notification module
      */
-    public async deleteNotificationUser() : Promise<void> {
+    public async deleteNotificationUser(): Promise<void> {
         const dbHelper = new DbHelper();
         await dbHelper.deleteUser(this.prodUserId);
         await dbHelper.closeConnect();
@@ -304,7 +304,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Navigate to the notification template management page
      */
-    private async navigateTo(target : "manageTemplates" | "moduleEditor") : Promise<void> {
+    private async navigateTo(target: "manageTemplates" | "moduleEditor"): Promise<void> {
         await this.navigationMenuButton.click();
         try {
             await this.administrationButton.click();
@@ -322,7 +322,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Add a module
      */
-    public async addModule() : Promise<void> {
+    public async addModule(): Promise<void> {
         if (Process.env.BRANCH != "prod") await this.openAllNotifications();
         await this.navigateTo("moduleEditor");
         await this.addModuleButton.click();
@@ -334,7 +334,7 @@ export class NotificationsPage extends MainPage {
     /**
      * Add a notification template
      */
-    public async addTemplate() : Promise<void> {
+    public async addTemplate(): Promise<void> {
         await this.navigateTo("manageTemplates");
         await this.selectModule.click();
         await Elements.waitForVisible(this.moduleValue(this.moduleName));
@@ -344,8 +344,8 @@ export class NotificationsPage extends MainPage {
         await this.title.type(this.templateName);
         await this.description.type(InputData.randomWord);
         await this.templateText.type(InputData.randomWord);
-        const allCheckboxCount : number = await this.checkbox.count()
-        const checkboxCountInWindow : number = 4;
+        const allCheckboxCount: number = await this.checkbox.count()
+        const checkboxCountInWindow: number = 4;
         for (let i=allCheckboxCount-checkboxCountInWindow;i<allCheckboxCount;i++) {
             await this.checkbox.nth(i).click();
         }
@@ -357,8 +357,8 @@ export class NotificationsPage extends MainPage {
     /**
      * Edit a notification template
      */
-    public async editTemplate() : Promise<void> {
-        const newTemplateName : string = InputData.randomWord;
+    public async editTemplate(): Promise<void> {
+        const newTemplateName: string = InputData.randomWord;
         await this.getTemplateByName(this.templateName).fill(newTemplateName);
         this.templateName = newTemplateName;
         const checkboxCount : number = await this.checkbox.count();
@@ -368,7 +368,10 @@ export class NotificationsPage extends MainPage {
         await this.saveButton.click();
         await expect(this.getTemplateByName(this.templateName)).toBeVisible();
     }
-    public async deleteTemplate() : Promise<void> {
+    /**
+     * Delete a template
+     */
+    public async deleteTemplate(): Promise<void> {
         await this.deleteTableButton.click();
         await this.deleteButton.click();
         await Elements.waitForHidden(this.deleteButton);

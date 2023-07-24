@@ -3,7 +3,7 @@ import {NotificationsPage} from "../../pages/notifications/notifications.page.js
 import * as Process from "process";
 
 type Fixtures = {
-    notifications : NotificationsPage
+    notifications: NotificationsPage
 }
 export const test = base.extend<Fixtures>({
     notifications : async ({page},use) => {
