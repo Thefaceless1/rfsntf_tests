@@ -1,21 +1,12 @@
 import postgres from "postgres";
-import fs from "fs";
 import {userNotifications, workOperationLog, workUsers} from "./tables.js";
 import {NotificationRoles} from "../e2e/page-objects/helpers/enums/notification-roles.js";
-import * as Process from "process";
+import {dbConfig} from "./db.config.js";
 
 export class DbHelper {
    public readonly sql: postgres.Sql<Record<string, postgres.PostgresType> extends {} ? {} : any>
     constructor() {
-        this.sql = postgres(this.configData())
-    }
-    /**
-     * test.db.config.json and prod.db.config.json file parser
-     */
-    public configData(): object {
-       return (Process.env.BRANCH == "prod") ?
-           JSON.parse(fs.readFileSync("./src/db/prod.db.config.json","utf-8")) :
-           JSON.parse(fs.readFileSync("./src/db/test.db.config.json","utf-8"));
+        this.sql = postgres(dbConfig)
     }
     /**
      * Update is_received column(set false) in the user_notification table;

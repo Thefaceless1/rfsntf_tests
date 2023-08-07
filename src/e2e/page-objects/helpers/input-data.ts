@@ -6,10 +6,6 @@ export class InputData {
      */
     public static currentDate: string = new Date().toLocaleDateString();
     /**
-     * Current module version
-     */
-    public static moduleVersion: string = "10.1.1.1";
-    /**
      * Random set of letters
      */
     public static get randomWord(): string {

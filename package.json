@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "playwright_powershell": "$env:BRANCH=\"prod\"\nnpx playwright test\nallure generate src/e2e/artifacts/report -o src/e2e/artifacts/allure-report --clean\nallure open src/e2e/artifacts/allure-report",
-    "playwright_cmd": "set BRANCH=prod\nnpx playwright test & allure generate src/e2e/artifacts/report -o src/e2e/artifacts/allure-report --clean & allure open src/e2e/artifacts/allure-report"
+    "report": "npx playwright show-report src/e2e/artifacts/report"
   },
   "author": "shelekh mikhail",
   "license": "ISC",
@@ -13,6 +12,7 @@
   "dependencies": {
     "-": "^0.0.1",
     "@types/node": "^18.11.13",
+    "dotenv": "^16.3.1",
     "node": "^19.2.0",
     "node-2fa": "^2.0.3",
     "postgres": "^3.3.5",
