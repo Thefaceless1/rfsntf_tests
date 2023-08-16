@@ -1,5 +1,5 @@
 import postgres from "postgres";
-import {userNotifications, workOperationLog, workUsers} from "./tables.js";
+import {modules, userNotifications, workOperationLog, workUsers} from "./tables.js";
 import {NotificationRoles} from "../e2e/page-objects/helpers/enums/notification-roles.js";
 import {dbConfig} from "./db.config.js";
 
@@ -40,10 +40,15 @@ export class DbHelper {
      * Delete a user from 'work_users' and 'work_operation_log' tables
      */
     public async deleteUser(userId: number): Promise<void> {
-        await this.sql`DELETE FROM ${this.sql(workOperationLog.tableName)}
+        try {
+            await this.sql`DELETE FROM ${this.sql(workOperationLog.tableName)}
                        WHERE ${this.sql(workOperationLog.columns.userId)} == ${userId}`;
-        await this.sql`DELETE FROM ${this.sql(workUsers.tableName)}
+            await this.sql`DELETE FROM ${this.sql(workUsers.tableName)}
                        WHERE ${this.sql(workUsers.columns.userId)} == ${userId}`;
+        }
+        catch (err) {
+            setTimeout(async () => await this.deleteUser(userId),1000);
+        }
     }
     /**
      * Set "Administrator" role for user
@@ -52,6 +57,13 @@ export class DbHelper {
         await this.sql`UPDATE ${this.sql(workUsers.tableName)}
                        SET ${this.sql(workUsers.columns.roleId)} = ${NotificationRoles.admin}
                        WHERE ${this.sql(workUsers.columns.userId)} = ${userId}`;
+    }
+    /**
+     * Delete created modules
+     */
+    public async deleteModule(): Promise<void> {
+        await this.sql`DELETE FROM ${this.sql(modules.tableName)}
+                       WHERE ${this.sql(modules.columns.name)} LIKE 'автотест%'`
     }
     /**
      * Close connect to databases

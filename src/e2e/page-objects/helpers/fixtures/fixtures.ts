@@ -11,6 +11,7 @@ export const test = base.extend<Fixtures>({
         await notification.addNotificationUser();
         await notification.login()
         await use(notification);
+        await notification.deleteModules();
         if(Process.env.BRANCH == "prod") await notification.deleteNotificationUser();
     }
 })

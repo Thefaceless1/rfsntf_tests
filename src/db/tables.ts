@@ -20,3 +20,13 @@ export const workOperationLog = {
         userId: "user_id"
     }
 }
+
+export const modules = {
+    tableName: "rfsntf.nsi_rfs_modules",
+    columns: {
+        id: "id",
+        name: "name",
+        description: "description",
+        logo: "logo"
+    }
+}

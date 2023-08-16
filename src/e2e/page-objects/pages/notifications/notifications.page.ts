@@ -302,6 +302,14 @@ export class NotificationsPage extends MainPage {
         await dbHelper.closeConnect();
     }
     /**
+     * Delete created modules
+     */
+    public async deleteModules(): Promise<void> {
+        const dbHelper = new DbHelper();
+        await dbHelper.deleteModule();
+        await dbHelper.closeConnect();
+    }
+    /**
      * Navigate to the notification template management page
      */
     private async navigateTo(target: "manageTemplates" | "moduleEditor"): Promise<void> {
