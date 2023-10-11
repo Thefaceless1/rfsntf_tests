@@ -4,7 +4,13 @@ export class InputData {
     /**
      * Get current date
      */
-    public static currentDate: string = new Date().toLocaleDateString();
+    public static currentDate: string = new Date().toLocaleDateString('ru-RU');
+    /**
+     * Test annotation date
+     */
+    public static get testAnnotationDate(): string {
+        return new Date().toLocaleString('ru-RU',{timeZone: 'Europe/Moscow'});
+    }
     /**
      * Random set of letters
      */

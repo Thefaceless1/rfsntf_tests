@@ -8,7 +8,7 @@ test.describe("Уведомления",() => {
         ,async ({notifications}) => {
         test.info().annotations.push
         (
-            {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
+            {type: "Дата и время запуска",description: InputData.testAnnotationDate},
             {type: "Версия модуля",description: `${Process.env.APP_VERSION}`},
             {type: "Адрес сервера",description: `${config.use?.baseURL}`}
         );
@@ -18,19 +18,19 @@ test.describe("Уведомления",() => {
             async () => notifications.viewSelectedNotification()
         );
         await test.step(
-            "Перемещение уведомления в корзину",
+            "Отметка уведомления как непрочитанного",
             async () => notifications.markAsUnread()
         );
         await test.step(
-            "Удаление уведомления",
+            "Отметка уведомления как прочитанного",
             async () => notifications.markAsRead()
         );
         await test.step(
-            "Отметка уведомления как прочитанного",
+            "Перемещение уведомления в корзину",
             async () => notifications.moveToTrash()
         );
         await test.step(
-            "Отметка уведомления как непрочитанного",
+            "Удаление уведомления",
             async () => notifications.deleteNotification()
         );
         await test.step(
@@ -43,7 +43,7 @@ test.describe("Уведомления",() => {
         async ({notifications}) => {
         test.info().annotations.push
         (
-            {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
+            {type: "Дата и время запуска",description: InputData.testAnnotationDate},
             {type: "Версия модуля",description: `${Process.env.APP_VERSION}`},
             {type: "Адрес сервера",description: `${config.use?.baseURL}`}
         );
