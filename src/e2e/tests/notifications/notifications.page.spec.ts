@@ -1,6 +1,7 @@
 import {test} from "../../page-objects/helpers/fixtures/fixtures.js";
 import {InputData} from "../../page-objects/helpers/input-data.js";
 import * as Process from "process";
+import config from "../../../../playwright.config.js"
 
 test.describe("Уведомления",() => {
     test(`Работа с уведомлениям. Дата запуска: ${InputData.currentDate}, Версия модуля: ${Process.env.APP_VERSION}`
@@ -8,7 +9,8 @@ test.describe("Уведомления",() => {
         test.info().annotations.push
         (
             {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
-            {type: "Версия модуля",description: `${Process.env.APP_VERSION}`}
+            {type: "Версия модуля",description: `${Process.env.APP_VERSION}`},
+            {type: "Адрес сервера",description: `${config.use?.baseURL}`}
         );
 
         await test.step(
@@ -17,19 +19,19 @@ test.describe("Уведомления",() => {
         );
         await test.step(
             "Перемещение уведомления в корзину",
-            async () => notifications.moveToTrash()
+            async () => notifications.markAsUnread()
         );
         await test.step(
             "Удаление уведомления",
-            async () => notifications.deleteNotification()
-        );
-        await test.step(
-            "Отметка уведомления как прочитанного",
             async () => notifications.markAsRead()
         );
         await test.step(
+            "Отметка уведомления как прочитанного",
+            async () => notifications.moveToTrash()
+        );
+        await test.step(
             "Отметка уведомления как непрочитанного",
-            async () => notifications.markAsUnread()
+            async () => notifications.deleteNotification()
         );
         await test.step(
             "Изменение подписки на уведомления",
@@ -42,7 +44,8 @@ test.describe("Уведомления",() => {
         test.info().annotations.push
         (
             {type: "Дата и время запуска",description: `${new Date().toLocaleString()}`},
-            {type: "Версия модуля",description: `${Process.env.APP_VERSION}`}
+            {type: "Версия модуля",description: `${Process.env.APP_VERSION}`},
+            {type: "Адрес сервера",description: `${config.use?.baseURL}`}
         );
 
         await test.step(

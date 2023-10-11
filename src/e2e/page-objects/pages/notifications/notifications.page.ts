@@ -3,11 +3,8 @@ import {expect, Locator, Page} from "@playwright/test";
 import {Elements} from "../../../framework/elements/elements.js";
 import {DbHelper} from "../../../../db/db-helper.js";
 import {Notifications} from "../../helpers/enums/notifications.js";
-import {NotificationRoles} from "../../helpers/enums/notification-roles.js";
 import {InputData} from "../../helpers/input-data.js";
 import {randomInt} from "crypto";
-import * as Process from "process";
-import {Api} from "../../helpers/enums/api.js";
 
 export class NotificationsPage extends MainPage {
     private readonly moduleName: string = InputData.randomWord;
@@ -15,22 +12,6 @@ export class NotificationsPage extends MainPage {
     constructor(page: Page) {
         super(page);
     }
-    /**
-     * Bell button
-     */
-    private bellButton: Locator = Elements.getElement(this.page,"//span[contains(@class,'IconRing')]")
-    /**
-     * List of unread messages
-     */
-    private unreadMessageList: Locator = Elements.getElement(this.page,"//*[contains(@class,'ContextMenuItem-Slot_position_center')]")
-    /**
-     * Icon with the number of unread messages
-     */
-    private countMessageIcon: Locator = Elements.getElement(this.page,"//sup")
-    /**
-     * Button "Show all"
-     */
-    private showAllButton: Locator = Elements.getElement(this.page,"//*[text()='Показать все']")
     /**
      * Button "Subscription to notifications"
      */
@@ -191,43 +172,15 @@ export class NotificationsPage extends MainPage {
      * Open selected notification
      */
     public async viewSelectedNotification(): Promise<void> {
-        if (Process.env.BRANCH != "prod") {
-            const dbHelper = new DbHelper();
-            await dbHelper.markAsUnreadMessages(this.userId);
-            await dbHelper.closeConnect();
-            await Elements.waitForVisible(this.countMessageIcon);
-            await this.bellButton.click();
-            await Elements.waitForVisible(this.unreadMessageList.first());
-            const popupPromise = this.page.waitForEvent('popup');
-            await this.unreadMessageList.first().click();
-            const popup = await popupPromise;
-            await popup.waitForLoadState();
-            await expect(this.messageText(popup)).toBeVisible();
-            await popup.close();
-        }
-        else {
-            await Elements.waitForVisible(this.createdDateColumn.first());
-            await this.notificationsColumn.first().click();
-            await expect(this.messageText(this.page)).toBeVisible();
-            await this.page.goBack();
-        }
-    }
-    /**
-     * Open all notifications
-     */
-    private async openAllNotifications(): Promise<void> {
-        await this.bellButton.click();
-        const popupPromise = this.page.waitForEvent('popup');
-        await this.showAllButton.click();
-        const popup = await popupPromise;
-        await popup.waitForLoadState();
-        this.page = popup;
+        await Elements.waitForVisible(this.createdDateColumn.first());
+        await this.notificationsColumn.first().click();
+        await expect(this.messageText(this.page)).toBeVisible();
+        await this.page.goBack();
     }
     /**
      * Move to trash notification
      */
     public async moveToTrash(): Promise<void> {
-        if (Process.env.BRANCH != "prod") await this.openAllNotifications();
         await Elements.waitForVisible(this.createdDateColumn.first());
         await this.checkbox.nth(1).click();
         await this.deleteSelectedButton.click();
@@ -248,7 +201,6 @@ export class NotificationsPage extends MainPage {
      * Mark notification as read
      */
     public async markAsRead(): Promise<void> {
-        await this.page.goBack();
         await this.checkbox.nth(1).click();
         await this.markAsReadButton.click();
         await expect(this.notification(Notifications.markedAsRead)).toBeVisible();
@@ -258,7 +210,6 @@ export class NotificationsPage extends MainPage {
      * Mark notification as unread
      */
     public async markAsUnread(): Promise<void> {
-        await this.page.goBack();
         await this.checkbox.nth(1).click();
         await this.markAsUnreadButton.click();
         await expect(this.notification(Notifications.markedAsUnread)).toBeVisible();
@@ -267,6 +218,7 @@ export class NotificationsPage extends MainPage {
      * Changing notification subscriptions
      */
     public async changeSubscription(): Promise<void> {
+        await this.page.goBack();
         await this.subscriptionNotificationButton.click();
         await Elements.waitForVisible(this.checkbox.first());
         const enabledCheckboxCount: number = await this.checkbox.count();
@@ -283,14 +235,7 @@ export class NotificationsPage extends MainPage {
      */
     public async addNotificationUser(): Promise<void> {
         const dbHelper = new DbHelper();
-        if(Process.env.BRANCH == "prod") await dbHelper.insertUser(this.prodUserId);
-        else {
-            const response = await this.page.request.get(Api.users);
-            this.userId = await response.json().then(value => value.data[this.userNumber].id);
-            const userRoleId = await dbHelper.getUserRoleId(this.userId);
-            if(userRoleId.length < 1) await dbHelper.insertUser(this.userId);
-            else if(userRoleId[0].user_id != NotificationRoles.admin) await dbHelper.setAdminRole(this.userId);
-        }
+        await dbHelper.insertUser(this.userId);
         await dbHelper.closeConnect();
     }
     /**
@@ -298,7 +243,7 @@ export class NotificationsPage extends MainPage {
      */
     public async deleteNotificationUser(): Promise<void> {
         const dbHelper = new DbHelper();
-        await dbHelper.deleteUser(this.prodUserId);
+        await dbHelper.deleteUser(this.userId);
         await dbHelper.closeConnect();
     }
     /**
@@ -331,7 +276,6 @@ export class NotificationsPage extends MainPage {
      * Add a module
      */
     public async addModule(): Promise<void> {
-        if (Process.env.BRANCH != "prod") await this.openAllNotifications();
         await this.navigateTo("moduleEditor");
         await this.addModuleButton.click();
         await this.name.type(this.moduleName);

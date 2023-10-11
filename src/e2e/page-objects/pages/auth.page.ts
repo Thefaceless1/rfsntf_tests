@@ -7,9 +7,8 @@ import * as Process from "process";
 export class AuthPage extends BasePage {
     private readonly userMail: string = "sync-license@rfs.ru"
     private readonly userPassword: string = "RfsTest2023"
-    protected readonly prodUserId: number = 17513354
-    protected readonly userNumber : number = 0;
-    protected userId: number = 0;
+    protected readonly userId: number = (Process.env.BRANCH == "prod") ? 17513354 : 11309600
+    private readonly rfsUserId: number = 2
     constructor(page: Page) {
         super(page)
     }
@@ -26,9 +25,9 @@ export class AuthPage extends BasePage {
      */
     private selectUserMenu: Locator = Elements.getElement(this.page,"//*[contains(@class,'user__control')]")
     /**
-     * 'Check user' menu dropdown values
+     * Selected user in drop down menu
      */
-    private selectUserMenuList: Locator = Elements.getElement(this.page,"//*[contains(@class,'user__option')]")
+    private selectedUser: Locator = Elements.getElement(this.page,`//*[contains(@class,'user__option') and contains(text(),'(${this.rfsUserId})')]`)
     /**
      * Field "E-mail"
      */
@@ -72,8 +71,8 @@ export class AuthPage extends BasePage {
             await this.selectUserButton.click();
             await Elements.waitForVisible(this.selectUserMenu);
             await this.selectUserMenu.click();
-            await Elements.waitForVisible(this.selectUserMenuList.first());
-            await this.selectUserMenuList.nth(this.userNumber).click();
+            await Elements.waitForVisible(this.selectedUser);
+            await this.selectedUser.click();
             await this.saveButton.click();
         }
     }
