@@ -1,6 +1,6 @@
 import {Locator, Page} from "@playwright/test";
 
-export class Elements {
+export class Element {
     /**
      * Get a page element
      */

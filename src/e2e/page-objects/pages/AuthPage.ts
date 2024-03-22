@@ -1,6 +1,6 @@
 import {Locator, Page} from "@playwright/test";
-import {BasePage} from "./base.page.js";
-import {Elements} from "../../framework/elements/elements.js";
+import {BasePage} from "./BasePage.js";
+import {Element} from "../../framework/elements/Element.js";
 import twoFactor from "node-2fa";
 import * as Process from "process";
 
@@ -15,63 +15,63 @@ export class AuthPage extends BasePage {
     /**
      * Picture to call the authorization menu
      */
-    private authAvatar: Locator = Elements.getElement(this.page,"//*[contains(@class,'login_avatar')]")
+    private authAvatar: Locator = Element.getElement(this.page,"//*[contains(@class,'login_avatar')]")
     /**
      * 'Check user' button
      */
-    private selectUserButton: Locator = Elements.getElement(this.page,"//*[text()='Выбрать пользователя']")
+    private selectUserButton: Locator = Element.getElement(this.page,"//*[text()='Выбрать пользователя']")
     /**
      * 'Check user' menu
      */
-    private selectUserMenu: Locator = Elements.getElement(this.page,"//*[contains(@class,'user__control')]")
+    private selectUserMenu: Locator = Element.getElement(this.page,"//*[contains(@class,'user__control')]")
     /**
      * Selected user in drop down menu
      */
-    private selectedUser: Locator = Elements.getElement(this.page,`//*[contains(@class,'user__option') and contains(text(),'(${this.rfsUserId})')]`)
+    private selectedUser: Locator = Element.getElement(this.page,`//*[contains(@class,'user__option') and contains(text(),'(${this.rfsUserId})')]`)
     /**
      * Field "E-mail"
      */
-    private email: Locator = Elements.getElement(this.page,"//input[@placeholder='E-mail']")
+    private email: Locator = Element.getElement(this.page,"//input[@placeholder='E-mail']")
     /**
      * Field "Password"
      */
-    private password: Locator = Elements.getElement(this.page,"//input[@name='password']")
+    private password: Locator = Element.getElement(this.page,"//input[@name='password']")
     /**
      * Field "Confirmation code"
      */
-    private confirmationCode: Locator = Elements.getElement(this.page,"//input[@placeholder='Код подтверждения']")
+    private confirmationCode: Locator = Element.getElement(this.page,"//input[@placeholder='Код подтверждения']")
     /**
      * Button "Confirm"
      */
-    private confirmButton: Locator = Elements.getElement(this.page,"//button[text()='ПОДТВЕРДИТЬ']")
+    private confirmButton: Locator = Element.getElement(this.page,"//button[text()='ПОДТВЕРДИТЬ']")
     /**
      * Button "Enter"
      */
-    private enterButton: Locator = Elements.getElement(this.page,"//button[text()='ВОЙТИ']")
+    private enterButton: Locator = Element.getElement(this.page,"//button[text()='ВОЙТИ']")
     /**
      * Message "Verification code entered incorrectly"
      */
-    private invalidCodeMessage: Locator = Elements.getElement(this.page,"//p[text()='Неверно введён проверочный код']")
+    private invalidCodeMessage: Locator = Element.getElement(this.page,"//p[text()='Неверно введён проверочный код']")
     /**
      * Log in to the system
      */
     public async login(): Promise<void> {
         await this.page.goto("");
         if (Process.env.BRANCH == "prod") {
-            await Elements.waitForVisible(this.email);
+            await Element.waitForVisible(this.email);
             await this.email.type(this.userMail);
             await this.password.type(this.userPassword);
             await this.enterButton.click();
-            await Elements.waitForVisible(this.confirmationCode);
+            await Element.waitForVisible(this.confirmationCode);
             await this.setConfirmationCode();
         }
         else {
-            await Elements.waitForVisible(this.authAvatar);
+            await Element.waitForVisible(this.authAvatar);
             await this.checkSelectUserButton();
             await this.selectUserButton.click();
-            await Elements.waitForVisible(this.selectUserMenu);
+            await Element.waitForVisible(this.selectUserMenu);
             await this.selectUserMenu.click();
-            await Elements.waitForVisible(this.selectedUser);
+            await Element.waitForVisible(this.selectedUser);
             await this.selectedUser.click();
             await this.saveButton.click();
         }

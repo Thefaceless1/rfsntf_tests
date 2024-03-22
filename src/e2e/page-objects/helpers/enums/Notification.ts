@@ -1,4 +1,4 @@
-export enum Notifications {
+export enum Notification {
     deletedFromTrash = "Удалены из корзины",
     movedToTrash = "Помещены в корзину",
     markedAsRead = "Отмечены как прочитанные",

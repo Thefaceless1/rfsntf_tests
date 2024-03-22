@@ -1,6 +1,5 @@
 import postgres from "postgres";
-import {modules, workOperationLog, workUsers} from "./tables.js";
-import {NotificationRoles} from "../e2e/page-objects/helpers/enums/notification-roles.js";
+import {NotificationRoles} from "../e2e/page-objects/helpers/enums/NotificationRoles.js";
 import {dbConfig} from "./db.config.js";
 
 export class DbHelper {
@@ -12,10 +11,8 @@ export class DbHelper {
      * Create a user in 'work_users' table
      */
     public async insertUser(userId: number): Promise<void> {
-        await this.sql`INSERT INTO ${this.sql(workUsers.tableName)}
-                       (${this.sql(workUsers.columns.userId)},
-                        ${this.sql(workUsers.columns.roleId)},
-                        ${this.sql(workUsers.columns.isActive)})
+        await this.sql`INSERT INTO rfsntf.work_users
+                       (user_id,role_id,is_active)
                        VALUES
                        (${userId}, ${NotificationRoles.admin}, ${true})
                        on conflict do nothing`;
@@ -25,10 +22,10 @@ export class DbHelper {
      */
     public async deleteUser(userId: number): Promise<void> {
         try {
-            await this.sql`DELETE FROM ${this.sql(workOperationLog.tableName)}
-                       WHERE ${this.sql(workOperationLog.columns.userId)} = ${userId}`;
-            await this.sql`DELETE FROM ${this.sql(workUsers.tableName)}
-                       WHERE ${this.sql(workUsers.columns.userId)} = ${userId}`;
+            await this.sql`DELETE FROM rfsntf.work_operations_log
+                           WHERE user_id = ${userId}`;
+            await this.sql`DELETE FROM rfsntf.work_users
+                           WHERE user_id = ${userId}`;
         }
         catch (err) {
             await this.deleteUser(userId);
@@ -38,8 +35,8 @@ export class DbHelper {
      * Delete created modules
      */
     public async deleteModule(): Promise<void> {
-        await this.sql`DELETE FROM ${this.sql(modules.tableName)}
-                       WHERE ${this.sql(modules.columns.name)} LIKE 'автотест%'`
+        await this.sql`DELETE FROM rfsntf.nsi_rfs_modules
+                       WHERE name LIKE 'автотест%'`;
     }
     /**
      * Close connect to databases

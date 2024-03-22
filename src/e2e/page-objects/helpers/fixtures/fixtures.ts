@@ -1,6 +1,5 @@
 import {test as base} from '@playwright/test';
-import {NotificationsPage} from "../../pages/notifications/notifications.page.js";
-import * as Process from "process";
+import {NotificationsPage} from "../../pages/notifications/NotificationsPage.js";
 
 type Fixtures = {
     notifications: NotificationsPage
