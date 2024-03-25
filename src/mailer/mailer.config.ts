@@ -4,6 +4,7 @@ import * as Process from "process";
 import 'dotenv/config'
 import Mail from "nodemailer/lib/mailer";
 import * as fs from "fs";
+import {logsFilePath} from "../logger/log4js.config.js";
 
 export const transporter = nodemailer.createTransport({
     service: 'SMTP',
@@ -30,6 +31,9 @@ function getAttachments(): Mail.Attachment[] {
             path: path.resolve("src","e2e","artifacts","report","index.html")
         }
     ]
+    const logPath: string = path.resolve("src","e2e","artifacts","logs");
+    const logFolder: string[] = fs.readdirSync(logPath);
+    if(logFolder.length > 0) attachments.push(getLogFile());
     const screenshotsPath: string = path.resolve("src","e2e","artifacts","screenshots");
     const screenshotsFolder: string[] = fs.readdirSync(screenshotsPath);
     if(screenshotsFolder.length > 0) {
@@ -48,4 +52,11 @@ function getAttachments(): Mail.Attachment[] {
         })
     }
     return attachments;
+}
+
+function getLogFile(): Mail.Attachment {
+    return {
+        filename: 'rfsntf.log',
+        path: logsFilePath
+    }
 }
