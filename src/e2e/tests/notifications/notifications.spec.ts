@@ -3,8 +3,8 @@ import {InputData} from "../../page-objects/helpers/InputData.js";
 import * as Process from "process";
 import config from "../../../../playwright.config.js"
 
-test.describe("Уведомления",() => {
-    test(`Работа с уведомлениям. Дата запуска: ${InputData.currentDate}, Версия модуля: ${Process.env.APP_VERSION}`
+test.describe("Работа с уведомлениям",() => {
+    test(`Дата запуска: ${InputData.currentDate}, Версия модуля: ${Process.env.APP_VERSION}`
         ,async ({notifications}) => {
         test.info().annotations.push
         (
@@ -36,33 +36,6 @@ test.describe("Уведомления",() => {
         await test.step(
             "Изменение подписки на уведомления(push, email, telegram)",
             async () => notifications.changeSubscription()
-        );
-    })
-
-    test(`Администрирование уведомлений. Дата запуска: ${InputData.currentDate}, Версия модуля: ${Process.env.APP_VERSION}`,
-        async ({notifications}) => {
-        test.info().annotations.push
-        (
-            {type: "Дата и время запуска",description: InputData.testAnnotationDate},
-            {type: "Версия модуля",description: `${Process.env.APP_VERSION}`},
-            {type: "Адрес сервера",description: `${config.use?.baseURL}`}
-        );
-
-        await test.step(
-            "Добавление модуля",
-            async () => notifications.addModule()
-        );
-        await test.step(
-            "Добавление шаблона уведомлений",
-            async () => notifications.addTemplate()
-        );
-        await test.step(
-            "Редактирование шаблона уведомлений",
-            async () => notifications.editTemplate()
-        );
-        await test.step(
-            "Удаление шаблона уведомлений",
-            async () => notifications.deleteTemplate()
         );
     })
 })

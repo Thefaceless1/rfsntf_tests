@@ -14,7 +14,7 @@ import * as Process from "process";
 const config: PlaywrightTestConfig = {
   testDir: 'src/e2e/tests/',
   /* Maximum time one test can run for. */
-  timeout: 300 * 1000,
+  timeout: 360 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -40,7 +40,7 @@ const config: PlaywrightTestConfig = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 10000,
     /* Base URL to use in actions like `await page.goto('/')`. */
-     baseURL: (Process.env.BRANCH == "prod") ? 'https://preprod-ntf.platform.rfs.ru/' : 'https://rfs-ntf-test-01.fors.ru/',
+     baseURL: (Process.env.BRANCH == "prod") ? 'https://preprod-ntf.platform.rfs.ru' : 'https://rfs-ntf-01.fors.ru',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

@@ -44,4 +44,52 @@ export class DbHelper {
     public async closeConnect(): Promise<void> {
         await this.sql.end();
     }
+    /**
+     * Update 'is_answer' attribute for notification template
+     */
+    public async updateAnswerAttribute(notificationCode: string, isAnswer: boolean): Promise<void> {
+        await this.sql`UPDATE rfsntf.nsi_message_templates
+                       SET can_answer = ${isAnswer} 
+                       WHERE code = ${notificationCode}`;
+    }
+    /**
+     * Adding a user subscription to an email notification
+     */
+    public async addMailNotificationAttribute(notificationCode: string, userId: number): Promise<void> {
+        await this.sql`UPDATE rfsntf.user_subscriptions
+                       SET get_email = true
+                       WHERE user_id = ${userId}
+                       AND template_id = (SELECT id FROM rfsntf.nsi_message_templates WHERE code = ${notificationCode})`
+    }
+    /**
+     * Getting secret key
+     */
+    public async getSecretKey(appId: string): Promise<string> {
+        const secretKey = await this.sql`SELECT secret FROM rfsntf.nsi_rfs_apps
+                                                                  WHERE app_id = ${appId}`;
+        if(secretKey.length == 0) throw new Error(`Отсутствует секретный ключ для appId: ${appId}`);
+        return secretKey[0].secret;
+    }
+    /**
+     * Delete existing answers
+     */
+    public async deleteExistingAnswers(userId: number): Promise<void> {
+        await this.sql`DELETE FROM rfsntf.user_answers
+                       WHERE user_id = ${userId}`
+    }
+    /**
+     * Get notification id by code
+     */
+    public async getNotificationId(notificationCode: string): Promise<number> {
+        const result = await this.sql`SELECT id FROM rfsntf.nsi_message_templates WHERE code = ${notificationCode}`
+        if(result.length == 0) throw new Error("Отсутствует уведомление с заданным кодом")
+        return result[0].id;
+    }
+    /**
+     * Get user answers
+     */
+    public async getUserAnswers(userId: number): Promise<postgres.PendingQuery<postgres.Row[]>> {
+        return this.sql`SELECT * FROM rfsntf.user_answers
+                       WHERE user_id = ${userId}`
+    }
 }

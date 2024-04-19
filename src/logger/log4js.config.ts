@@ -8,11 +8,12 @@ export const config: log4js.Configuration = {
             type: "file",
             filename: logsFilePath,
             flags: "w"
-        }
+        },
+        console: {type: "console"}
     },
     categories: {
         default: {
-            appenders: ["file"],
+            appenders: ["file","console"],
             level: "info"
         }
     }

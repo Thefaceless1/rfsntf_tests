@@ -207,24 +207,6 @@ export class NotificationsPage extends MainPage {
         await expect(this.notification(Notification.subscriptionChanged)).toBeVisible();
     }
     /**
-     * User validation for notification module:
-     * 1. Create the user if he doesn't exist
-     * 2. Set admin role if the user has a different role
-     */
-    public async addNotificationUser(): Promise<void> {
-        const dbHelper = new DbHelper();
-        await dbHelper.insertUser(this.userId);
-        await dbHelper.closeConnect();
-    }
-    /**
-     * Delete user from notification module
-     */
-    public async deleteNotificationUser(): Promise<void> {
-        const dbHelper = new DbHelper();
-        await dbHelper.deleteUser(this.userId);
-        await dbHelper.closeConnect();
-    }
-    /**
      * Delete created modules
      */
     public async deleteModules(): Promise<void> {

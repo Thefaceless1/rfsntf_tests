@@ -1,7 +1,7 @@
 import {Page} from "@playwright/test";
-import {AuthPage} from "./AuthPage.js";
+import {MailNotify} from "../helpers/MailNotify.js";
 
-export class MainPage extends AuthPage {
+export class MainPage extends MailNotify {
     constructor(page: Page) {
         super(page);
     }
