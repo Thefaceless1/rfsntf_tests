@@ -1,14 +1,16 @@
 import {test as base} from '@playwright/test';
 import {NotificationsPage} from "../../pages/notifications/NotificationsPage.js";
 import {MailPage} from "../../pages/MailPage.js";
+import {TelegramNotify} from "../TelegramNotify.js";
 
 type Fixtures = {
     notifications: NotificationsPage,
     adminNotification: NotificationsPage
-    mailPage: MailPage
+    mailPage: MailPage,
+    telegramNotify: TelegramNotify
 }
 export const test = base.extend<Fixtures>({
-    notifications : async ({page},use) => {
+    notifications: async ({page},use) => {
         const notification = new NotificationsPage(page);
         await notification.deleteNotificationUser();
         await notification.addNotificationUser();
@@ -24,12 +26,12 @@ export const test = base.extend<Fixtures>({
         await mailPage.deleteExistingMessages();
         await mailPage.deleteExistingAnswers();
         await mailPage.updateAnswerAttribute(true);
-        await mailPage.addMailNotificationAttribute();
+        await mailPage.addGetMailAttribute();
         await mailPage.saveMessage();
         await use(mailPage);
         await mailPage.updateAnswerAttribute(false);
     },
-    adminNotification : async ({page},use) => {
+    adminNotification: async ({page},use) => {
         const adminNotification = new NotificationsPage(page);
         await adminNotification.deleteNotificationUser();
         await adminNotification.addNotificationUser();
@@ -37,4 +39,13 @@ export const test = base.extend<Fixtures>({
         await use(adminNotification);
         await adminNotification.deleteModules();
     },
+    telegramNotify: async ({page},use) => {
+        const telegramNotify = new TelegramNotify(page);
+        await telegramNotify.deleteNotificationUser();
+        await telegramNotify.addNotificationUser();
+        await telegramNotify.deleteTestMessagesOperationLog();
+        await telegramNotify.addGetTelegramAttribute();
+        await telegramNotify.saveMessage();
+        await use(telegramNotify);
+    }
 })

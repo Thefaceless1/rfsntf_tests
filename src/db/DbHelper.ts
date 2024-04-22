@@ -53,9 +53,9 @@ export class DbHelper {
                        WHERE code = ${notificationCode}`;
     }
     /**
-     * Adding a user subscription to an email notification
+     * Adding 'get_email' attribute to notification for user
      */
-    public async addMailNotificationAttribute(notificationCode: string, userId: number): Promise<void> {
+    public async addGetMailAttribute(notificationCode: string, userId: number): Promise<void> {
         await this.sql`UPDATE rfsntf.user_subscriptions
                        SET get_email = true
                        WHERE user_id = ${userId}
@@ -75,7 +75,7 @@ export class DbHelper {
      */
     public async deleteExistingAnswers(userId: number): Promise<void> {
         await this.sql`DELETE FROM rfsntf.user_answers
-                       WHERE user_id = ${userId}`
+                       WHERE user_id = ${userId}`;
     }
     /**
      * Get notification id by code
@@ -90,6 +90,30 @@ export class DbHelper {
      */
     public async getUserAnswers(userId: number): Promise<postgres.PendingQuery<postgres.Row[]>> {
         return this.sql`SELECT * FROM rfsntf.user_answers
-                       WHERE user_id = ${userId}`
+                       WHERE user_id = ${userId}`;
+    }
+    /**
+     * Delete records with test messages from 'work_operations_log' table
+     */
+    public async deleteTestMessagesOperationLog(messageTitle: string): Promise<void> {
+        await this.sql`DELETE FROM rfsntf.work_operations_log 
+                       WHERE (changed_values->'fields'->'MAIL_MESSAGE_BODY')::text LIKE ${'%'+messageTitle+'%'}`;
+    }
+    /**
+     * Adding 'get_telegram' attribute to notification for user
+     */
+    public async addGetTelegramAttribute(notificationCode: string, userId: number): Promise<void> {
+        await this.sql`UPDATE rfsntf.user_subscriptions
+                       SET get_telegram = true
+                       WHERE user_id = ${userId}
+                       AND template_id = (SELECT id FROM rfsntf.nsi_message_templates WHERE code = ${notificationCode})`
+    }
+    /**
+     * Getting records from 'work_operations_log' for selected user
+     */
+    public async getTestMessagesOperationLog(operationId: string, messageTitle: string): Promise<postgres.PendingQuery<postgres.Row[]>> {
+        return this.sql`SELECT * from rfsntf.work_operations_log 
+                        WHERE operation_id = ${operationId} 
+                        AND (changed_values->'fields'->'MAIL_MESSAGE_BODY')::text LIKE ${'%'+messageTitle+'%'}`;
     }
 }

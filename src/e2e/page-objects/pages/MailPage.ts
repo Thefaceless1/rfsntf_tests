@@ -77,10 +77,10 @@ export class MailPage extends MailNotify {
             if(i != secondsCountToWait) await this.page.reload({waitUntil: "load"});
             await this.page.waitForTimeout(checkIntervalSeconds * 1000);
             if(await this.messageTitle.isVisible()) {
-                logger.info("Сообщение доставлено");
+                logger.info("Сообщение доставлено на почту");
                 break;
             }
-            else if(i <= 0) throw new Error("Сообщение не доставлено в указанный срок");
+            else if(i <= 0) throw new Error("Сообщение не доставлено на почту в указанный срок");
         }
     }
     /**
@@ -106,12 +106,12 @@ export class MailPage extends MailNotify {
             const answer = await dbHelper.getUserAnswers(this.userId);
             if(answer.length == 1) {
                 await dbHelper.closeConnect();
-                logger.info("Ответ пользователя записан в БД");
+                logger.info("Ответ пользователя на сообщение записан в БД");
                 break;
             }
             else if(i <= 0) {
                 await dbHelper.closeConnect();
-                throw new Error("Ответ пользователя не записан в БД в указанный срок");
+                throw new Error("Ответ пользователя на сообщение не записан в БД в указанный срок");
             }
         }
     }

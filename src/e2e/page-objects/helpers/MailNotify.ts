@@ -11,7 +11,7 @@ import {TestMessageType} from "./types/TestMessageType";
 import {logger} from "../../../logger/logger.js";
 
 export class MailNotify extends AuthPage {
-    private readonly notificationCode: string = "1.1"
+    protected readonly notificationCode: string = "1.1"
     private readonly appId: string = (process.env.BRANCH == "prod") ? "preprod-license.platform.rfs.ru" : "rfs-lic-test-01.fors.ru"
     private readonly moduleId: number = 9
     constructor(page: Page) {
@@ -28,9 +28,9 @@ export class MailNotify extends AuthPage {
     /**
      * Adding a user subscription to an email notification
      */
-    public async addMailNotificationAttribute(): Promise<void> {
+    public async addGetMailAttribute(): Promise<void> {
         const dbHelper = new DbHelper();
-        await dbHelper.addMailNotificationAttribute(this.notificationCode,this.userId);
+        await dbHelper.addGetMailAttribute(this.notificationCode,this.userId);
         await dbHelper.closeConnect();
     }
     /**
@@ -78,13 +78,13 @@ export class MailNotify extends AuthPage {
                 'Authorization': `Bearer ${await this.getJwtToken()}`
             }
         })
-        if(response.status() != 200) throw new Error(`\`Ошибка при отправке сообщения ${await response.body()}`);
-        else logger.info("Сообщение пользователю отправлено");
+        if(response.status() != 200) throw new Error(`Ошибка при генерации сообщения ${await response.body()}`);
+        else logger.info("Сообщение сгенерировано");
     }
     /**
      * Getting test message data
      */
-    private get testMessageData(): TestMessageType {
+    protected get testMessageData(): TestMessageType {
         const __dirname: string = dirname(fileURLToPath(import.meta.url));
         return JSON.parse(fs.readFileSync(path.resolve(__dirname,"testMessage.json"),{encoding: "utf-8"}));
     }
