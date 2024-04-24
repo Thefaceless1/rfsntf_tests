@@ -49,7 +49,7 @@ export class MailPage extends MailNotify {
     public async deleteExistingMessages(): Promise<void> {
         await this.page.goto(this.mailUrl);
         await this.userName.fill("rfs\\" + process.env.USER_LOGIN!);
-        await this.userPass.fill(process.env.USER_PASS!);
+        await this.userPass.fill(process.env.USER_MAIL_PASS!);
         await this.signInButton.click();
         await Element.waitForVisible(this.inbox);
         const messagesCount: number = await this.messageTitle.count();

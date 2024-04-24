@@ -65,7 +65,7 @@ export class AuthPage extends BasePage {
         if (Process.env.BRANCH == "prod") {
             await Element.waitForVisible(this.email);
             await this.email.fill(process.env.USER_LOGIN + "@rfs.ru");
-            await this.password.fill(process.env.USER_PASS!);
+            await this.password.fill(process.env.USER_PASSPORT_PASS!);
             await this.enterButton.click();
             if(process.env.IS_TWO_FA == "true") {
                 await Element.waitForVisible(this.confirmationCode);
